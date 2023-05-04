@@ -1,0 +1,9 @@
+{
+  "userId": 1,
+  "firstName": "AAA\nAA",
+  "lastName": "as23",
+  "phoneNumber": "123456",
+  "emailAddress": "AAAAA@test.com",
+  "homepage": "https://amogg.tistory.com/1",
+  "arrs": [["test1", "test2", "test3"],["test1", "test2", "test3"],["test1", "test2", "test3"]]
+}
