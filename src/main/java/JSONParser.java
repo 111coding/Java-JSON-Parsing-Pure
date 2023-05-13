@@ -60,12 +60,44 @@ class JSONParser {
         StringBuffer value = new StringBuffer();
         while (next()) {
             char c = current();
+            if (c == '\\') {
+                char es = parseEscape();
+                if (es == 'b') value.deleteCharAt(value.length() - 1);
+                else value.append(es);
+                continue;
+            }
             if (c == '"') {
                 break;
             }
             value.append(c);
         }
         return value.toString();
+    }
+
+    private char parseEscape() {
+        StringBuffer fourHexDigits = new StringBuffer();
+        boolean isHex = false;
+        while (next()) {
+            char c = current();
+            if (isHex && fourHexDigits.length() != 4) {
+                fourHexDigits.append(c);
+            }
+            else if (fourHexDigits.length() == 4) {
+                previous();
+                break;
+            }
+            else if (c == 'r') return '\r';
+            else if (c == 't') return '\t';
+            else if (c == 'n') return '\n';
+            else if (c == 'f') return '\f';
+            else if (c == 'b') return 'b';
+            else if (c == '/') return '/';
+            else if (c == '\\') return '\\';
+            else if (c == '"') return '"';
+            else if (c == 'u') isHex = true;
+        }
+
+        return (char) (Short.parseShort(fourHexDigits.toString(), 16));
     }
 
     private Object parseList() {
